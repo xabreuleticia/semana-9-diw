@@ -41,7 +41,7 @@ const data = {
             nome:"Mouse Gamer",
             preco:150,
             categoria:"Acessórios",
-            imagem:"./mouse-gamer.jpg",
+            imagem:"./imgs/mouse-gamer.jpg",
             descricao:"Mouse com alta precisão para jogos",
             emEstoque:true
         },
@@ -50,18 +50,18 @@ const data = {
             nome:"Teclado Mecânico",
             preco:300,
             categoria:"Acessórios",
-            imagem:"./imgs.teclado-mecanico.jpg",
+            imagem:"./imgs/teclado-mecanico.jpg",
             descricao:"Teclado com switches mecânicos",
             emEstoque:true
         },
         {
-            id: 7,
-            nome: "Xbox Series X",
-            preco: 4300,
-            categoria: "Games",
-            imagem: "./imgs/xbox-series-x.png",
-            descricao: "Console poderoso da Microsoft",
-            emEstoque: true
+            id:7,
+            nome:"Xbox Series X",
+            preco:4300,
+            categoria:"Games",
+            imagem:"./imgs/xbox-series-x.png",
+            descricao:"Console poderoso da Microsoft",
+            emEstoque:true
         },
         {
             id:8,
@@ -71,7 +71,111 @@ const data = {
             imagem:"./imgs/playstation-5.jfif",
             descricao:"Console de última geração da Sony",
             emEstoque:false
-        },
-        
+        }
     ]
 };
+
+const productList = document.getElementById("product-list");
+const productDetails = document.getElementById("product-details");
+
+const searchInput = document.querySelector("#search");
+const categorySelect = document.querySelector("#category");
+const btnRender = document.querySelector("#btnRender");
+
+function formatPrice(preco) {
+    return "R$ " + preco.toFixed(2);
+}
+
+function createProductCard(produto) {
+    const card = document.createElement("div");
+
+    card.classList.add("card");
+    card.setAttribute("data-id", produto.id);
+
+    card.style.border = "1px solid #ccc";
+    card.style.padding = "10px";
+    card.style.margin = "10px";
+    card.style.backgroundColor = "#f9f9f9";
+    card.style.cursor = "pointer";
+
+    const titulo = document.createElement("h3");
+    titulo.textContent = produto.nome;
+
+    const img = document.createElement("img");
+    img.setAttribute("src", produto.imagem);
+    img.setAttribute("width", "150");
+
+    const preco = document.createElement("p");
+    preco.textContent = formatPrice(produto.preco);
+
+    card.appendChild(titulo);
+    card.appendChild(img);
+    card.appendChild(preco);
+
+    return card;
+}
+
+function renderProducts(produtos) {
+    productList.innerHTML = "";
+
+    produtos.forEach(produto => {
+        const card = createProductCard(produto);
+        productList.appendChild(card);
+    });
+
+    const cards = document.querySelectorAll(".card");
+
+    cards.forEach((card, index) => {
+        card.addEventListener("click", () => {
+            showProductDetails(produtos[index]);
+        });
+    });
+}
+
+function renderCategories() {
+    categorySelect.innerHTML = "";
+
+    const optionTodas = document.createElement("option");
+    optionTodas.value = "todas";
+    optionTodas.textContent = "Todas";
+    categorySelect.appendChild(optionTodas);
+
+    const categorias = [...new Set(data.produtos.map(p => p.categoria))];
+
+    categorias.forEach(cat => {
+        const option = document.createElement("option");
+        option.value = cat;
+        option.textContent = cat;
+        categorySelect.appendChild(option);
+    });
+}
+
+function showProductDetails(produto) {
+    productDetails.innerHTML = `
+        <h2>${produto.nome}</h2>
+        <img src="${produto.imagem}" width="200">
+        <p><strong>Preço:</strong> ${formatPrice(produto.preco)}</p>
+        <p><strong>Categoria:</strong> ${produto.categoria}</p>
+        <p><strong>Estoque:</strong> ${produto.emEstoque ? "Disponível" : "Indisponível"}</p>
+        <p><strong>Descrição:</strong> ${produto.descricao}</p>
+    `;
+}
+
+function filterProducts() {
+    const busca = searchInput.value.toLowerCase();
+    const categoria = categorySelect.value;
+
+    return data.produtos.filter(produto => {
+        const matchNome = produto.nome.toLowerCase().includes(busca);
+        const matchCategoria = categoria === "todas" || produto.categoria === categoria;
+
+        return matchNome && matchCategoria;
+    });
+}
+
+btnRender.addEventListener("click", () => {
+    renderProducts(filterProducts());
+});
+
+renderCategories();
+renderProducts(data.produtos);
