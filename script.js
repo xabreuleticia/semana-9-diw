@@ -1,5 +1,5 @@
 const data = {
-    produtos: [
+    produtos:[
         {
             id:1,
             nome:"iPhone 13",
@@ -96,21 +96,38 @@ function createProductCard(produto) {
     card.style.padding = "10px";
     card.style.margin = "10px";
     card.style.backgroundColor = "#f9f9f9";
-    card.style.cursor = "pointer";
 
     const titulo = document.createElement("h3");
     titulo.textContent = produto.nome;
 
     const img = document.createElement("img");
-    img.setAttribute("src", produto.imagem);
-    img.setAttribute("width", "150");
+    img.src = produto.imagem;
+    img.width = 150;
 
     const preco = document.createElement("p");
     preco.textContent = formatPrice(produto.preco);
 
+    const categoria = document.createElement("p");
+    categoria.textContent = "Categoria: " + produto.categoria;
+
+    const btnDetalhes = document.createElement("button");
+    btnDetalhes.textContent = "Ver detalhes";
+    btnDetalhes.addEventListener("click", () => {
+        showProductDetails(produto);
+    });
+
+    const btnDestacar = document.createElement("button");
+    btnDestacar.textContent = "Destacar";
+    btnDestacar.addEventListener("click", () => {
+        card.classList.toggle("destaque");
+    });
+
     card.appendChild(titulo);
     card.appendChild(img);
     card.appendChild(preco);
+    card.appendChild(categoria);
+    card.appendChild(btnDetalhes);
+    card.appendChild(btnDestacar);
 
     return card;
 }
@@ -125,9 +142,17 @@ function renderProducts(produtos) {
 
     const cards = document.querySelectorAll(".card");
 
-    cards.forEach((card, index) => {
-        card.addEventListener("click", () => {
-            showProductDetails(produtos[index]);
+    cards.forEach(card => {
+        console.log("ID:", card.getAttribute("data-id"));
+
+        card.style.transition = "0.3s";
+
+        card.addEventListener("mouseover", () => {
+            card.style.transform = "scale(1.05)";
+        });
+
+        card.addEventListener("mouseout", () => {
+            card.style.transform = "scale(1)";
         });
     });
 }
@@ -177,61 +202,6 @@ btnRender.addEventListener("click", () => {
     renderProducts(filterProducts());
 });
 
-renderCategories();
-renderProducts(data.produtos);
-
-function createProductCard(produto) {
-    const card = document.createElement("div");
-
-    card.classList.add("card");
-    card.setAttribute("data-id", produto.id);
-
-    card.style.border = "1px solid #ccc";
-    card.style.padding = "10px";
-    card.style.margin = "10px";
-    card.style.backgroundColor = "#f9f9f9";
-
-    const titulo = document.createElement("h3");
-    titulo.textContent = produto.nome;
-
-    const img = document.createElement("img");
-    img.setAttribute("src", produto.imagem);
-    img.setAttribute("width", "150");
-
-    const preco = document.createElement("p");
-    preco.textContent = formatPrice(produto.preco);
-
-    const categoria = document.createElement("p");
-    categoria.textContent = "Categoria: " + produto.categoria;
-
-    const btnDetalhes = document.createElement("button");
-    btnDetalhes.textContent = "Ver detalhes";
-
-    btnDetalhes.addEventListener("click", () => {
-        showProductDetails(produto);
-    });
-
-    const btnDestacar = document.createElement("button");
-    btnDestacar.textContent = "Destacar";
-
-    btnDestacar.addEventListener("click", () => {
-        card.classList.toggle("destaque");
-    });
-
-    card.appendChild(titulo);
-    card.appendChild(img);
-    card.appendChild(preco);
-    card.appendChild(categoria);
-    card.appendChild(btnDetalhes);
-    card.appendChild(btnDestacar);
-
-    return card;
-}
-
-btnRender.addEventListener("click", () => {
-    renderProducts(filterProducts());
-});
-
 searchInput.addEventListener("input", () => {
     renderProducts(filterProducts());
 });
@@ -239,3 +209,6 @@ searchInput.addEventListener("input", () => {
 categorySelect.addEventListener("change", () => {
     renderProducts(filterProducts());
 });
+
+renderCategories();
+renderProducts(data.produtos);
