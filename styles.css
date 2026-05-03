@@ -1,0 +1,61 @@
+body{ 
+    background-color: rgb(220, 220, 255);
+}
+
+#category {
+    padding: 7px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+#category:hover {
+    border-color: #999;
+}
+
+#category:focus {
+    outline: none;
+    border-color: #007bff;
+}
+#btnRender {
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+#search {
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+.card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: white;
+    text-align: center;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.destaque {
+    border: 2px solid rgb(255, 255, 255);
+    background-color: #ffecec;
+}
+#category option {
+    background-color: white;
+    color: black;
+}
+
+#product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
