@@ -7,7 +7,7 @@ Nesta atividade, você vai montar um programa para praticar funções em JavaScr
 - Nome: Letícia Xavier Abreu
 - Matricula: 910742
 
-## Print dos cards renderizados
+## Print cards renderizados
 
 ![Print cards renderizados](captura-de-tela-cards-renderizados.PNG)
 <<  COLOQUE A IMAGEM AQUI >>
